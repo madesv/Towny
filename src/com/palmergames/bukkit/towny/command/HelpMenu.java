@@ -607,6 +607,7 @@ public enum HelpMenu {
 				.add("explosion", "")
 				.add("plotborder", "")
 				.add("constantplotborder", "")
+				.add("townborder", "")
 				.add("ignoreplots", "")
 				.add("townclaim", "")
 				.add("map", "")
@@ -733,6 +734,14 @@ public enum HelpMenu {
 			return new MenuBuilder("nation", Translation.of("nation_help_1"))
 				.add(Translation.of("nation_help_2"), Translation.of("nation_help_3"))
 				.add("list", Translation.of("nation_help_4"));
+		}
+	},
+	
+	NATION_RANK {
+		@Override
+		protected MenuBuilder load() {
+			return new MenuBuilder("nation rank")
+				.add("add/remove [resident] rank", "");
 		}
 	},
 	

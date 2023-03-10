@@ -2,6 +2,46 @@
 
 ___
 
+## A special message from LlmDl precedes [the normal Readme](https://github.com/TownyAdvanced/Towny#the-normal-readme) :
+
+Hello Towny community,
+
+Deciding to write this has not been easy, but I think it is better to get this out here rather than have you in the dark.
+
+To the folks already sponsoring me: you are all awesome and you can expect my regular old self. You will have my full attention, the words below do not apply to you. I am grateful for the help you've provided me over the years (some of you, you know who you are,) and I am incredibly grateful for the support you've given over the last 4 months.
+
+I have been working with Towny since 2011. I have been in charge of the project since 2014. I have put in more than 12 years of service to an Open Source project that you use. I have not run a minecraft server, or played minecraft in over 4.5 years.
+
+Some of you may know this, some may not: Late last year my source of income ceased, resulting in not getting paid many thousands of dollars that are owed to me (which I had expected and budgeted for.) Because of the nature of that company's failures I am unlikely to ever see this money. Up until that point, my normal job fully-subsidized the time I put into coding Towny and its many add-on plugin. You all have enjoyed my works because I was able to feed and house my family via my regular work whilst paying myself to work on Towny.
+
+I make myself available regularly on Discord answering mundane and complex questions alike. Bugs are usually fixed the same day they are reported. Other developers that contribute Pull Requests to Towny get reviews right away, and jr developers can usually expect me to help with commits so their work gets merged.
+
+99% of Towny server admins are not sponsoring the work that I put into Towny. As of this posting, just after Github dropped support for Paypal, I have 120 sponsors, down from 148 (nearly reaching my current goal.)
+
+This is somehow a normal thing for Open Source developers. If we put up paywalls in front of Downloads or in front of Support we can expect get nasty comments about being greedy, we can expect to receive negative reviews for not providing instant support. How dare an Open Source developer try to monetize what everyone gets to take for granted! Here's a look at what the worst-case scenario looks like for Open Source developers: <https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md> 
+
+There are days that I enjoy every minute of what I do with Towny. Helping out the new server admins with their greenleaf in the Discord as they learn the ropes around Towny can be fun. Making a sponsor's feature request a reality. Creating a brand new add-on plugin from nothing but code and the TownyAPI that I have spent years fostering. As of this posting Towny has a 4.8/5 rating on Spigot, with 115 reviews. Nearly all of the reviews cite me and my efforts. I enjoy coding or I would not still be doing it.
+
+And then there are days that I do not enjoy every minute of it, but you will be hard-pressed to find any days that I have not answered every question asked on the Discord.
+
+I not only provide server owners with amazing support I also provide many plugins. It is not uncommon for servers to use Towny with side-plugins I am also in charge of: SiegeWar, Dynmap-Towny, iConomy5, TownyResources all playing very large roles on the server with other plugins like TownyChat, TownyFlight, TownyCultures, and others playing smaller roles. I read people's startup logs when they need my help and they tend to use a lot of my plugins if they use Towny.
+
+I remember the time that Goosius decided to stop working on his fork of Towny that had SiegeWar built into it. He spent a little more than a year doing intense, active development, constantly getting feedback from server admins and players, constantly tweaking things. And then he vanished, burnt out from everything. He logged out of his SiegeWar discord and that was seemingly it. When I joined the SiegeWar discord in late 2020, I was surprised at how many people were clamouring for SiegeWar, willing to throw money at anyone that would continue coding SiegeWar. The developer left, and all of a sudden people were willing to pay.
+
+Is that what it will take with Towny? I have to outright quit in order for server owners to realize how much they rely on Towny?
+
+I am going to change how I handle things for the time being: 
+ - If you're expecting support on the Discord: I expect you to sponsor. Companies that provide software do not provide support for free. I will probably still respond to you if you're brand new and need that extra bit of help. If you can find something that isn't already documented on the Wiki, let me know and I'll add it. 
+ - If you are not sponsoring, please do not make suggestions for new features, I don't need ideas right now.
+ 
+Right now I need to pay my bills and provide food to my wife and children.
+
+The ball is in your collective hands as to whether you'll continue to see my presence felt here.
+
+___
+
+### The normal Readme
+
 <p><img align=right src="https://user-images.githubusercontent.com/879756/65964696-19d6b300-e423-11e9-9cb0-d193225ee40f.png">
 I'm LlmDl, the third lead developer of Towny. I have been managing the Towny project since 2014 and the release of Minecraft 1.8. Prior to me there was the original creator: Shadeness (active 2010-2011,) and the second developer: ElgarL (active 2011-2014.)
 
@@ -10,6 +50,8 @@ I am helped out by the TownyAdvanced team: Articdive, FlagCourier, Warrior and a
 Towny is one of the oldest still-in-development plugins for Minecraft. Shadeness created Towny for the now-defunct server platform called hMod. Shadeness ported Towny to Bukkit and left the project shortly afterwards, returning later to add EnemyWar or as it became known: [FlagWar](https://github.com/TownyAdvanced/FlagWar). Towny is now over 10 years old! 
 
 **Go check out some of the [features](https://github.com/TownyAdvanced/Towny/wiki#features) Towny has and see why it's still popular for yourself.**
+
+**If you're interested in add-on plugins for Towny, [check out the TownyAdvanced website/portal](https://townyadvanced.github.io) where you can view and download all of the  plugins that the team maintains, or check out the [SponsorPlugins](https://github.com/LlmDl/SponsorPlugins#readme) you get access to when you give back!**
 </p>
 
 [![CodeFactor](https://www.codefactor.io/repository/github/townyadvanced/towny/badge)](https://www.codefactor.io/repository/github/townyadvanced/towny)
@@ -44,7 +86,7 @@ ___
 ### Staying up to date
 <p><img align=right src="https://user-images.githubusercontent.com/879756/65964779-3a067200-e423-11e9-9928-938b976af2c2.gif" height="155">
     
-Now that all Release builds and Development builds are being made available here on github's [Releases](https://github.com/TownyAdvanced/Towny/releases) tab I am recommending that server admins "watch" Towny on github. Just click the watch button in the upper right and select "Custom > Releases".
+Now that all Release builds and Pre-release builds are being made available here on github's [Releases](https://github.com/TownyAdvanced/Towny/releases) tab I am recommending that server admins "watch" Towny on github. Just click the watch button in the upper right and select "Custom > Releases".
     
 Alternatively, if you [watch the resource](https://www.spigotmc.org/resources/towny-advanced.72694/watch) on Spigot you will be notified on that website when a new Release version is out.
 </p>
@@ -52,17 +94,18 @@ Alternatively, if you [watch the resource](https://www.spigotmc.org/resources/to
 ___
 
 ### Connect/Support
-The documentation found on the [Towny Wiki](https://github.com/TownyAdvanced/Towny/wiki) is updated every time a Release version of Towny is put out. If you are using a development build it is expected that you have read the [changelog](https://git.io/fjbS3) for any important changes since the previous Release build.
+The documentation found on the [Towny Wiki](https://github.com/TownyAdvanced/Towny/wiki) is updated every time a Release version of Towny is put out. If you are using a pre-release version it is expected that you have read the [changelog](https://git.io/fjbS3) for any important changes since the previous Release build.
 
 Some important pages to look over:
-- [Installing Towny](https://github.com/TownyAdvanced/Towny/wiki/Installation)
-- [How Towny Works](https://github.com/TownyAdvanced/Towny/wiki/How-Towny-Works)
+- **[Installing Towny](https://github.com/TownyAdvanced/Towny/wiki/Installation)** - Why make installation hard on yourself?
+- **[Frequently Asked Questions](https://github.com/TownyAdvanced/Towny/wiki/Frequently-Asked-Questions)** - Actually read this!
+- **[How Towny Works](https://github.com/TownyAdvanced/Towny/wiki/How-Towny-Works)** - The bulk of the Towny documentation, read it eventually.
 
 Here on GitHub's [Issue Tracker](https://github.com/TownyAdvanced/Towny/issues) you can file [bug reports](https://github.com/TownyAdvanced/Towny/issues/new?assignees=&labels=&template=bug_report.md&title=), [feature requests](https://github.com/TownyAdvanced/Towny/issues/new?assignees=&labels=&template=feature_request.md&title=Suggestion%3A+), or just ask [general questions.](https://github.com/TownyAdvanced/Towny/discussions/new?category=Q-A)
 
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/TownyAdvanced/Towny.svg)](http://isitmaintained.com/project/TownyAdvanced/Towny "Average time to resolve an issue") [![Percentage of issues still open](http://isitmaintained.com/badge/open/TownyAdvanced/Towny.svg)](http://isitmaintained.com/project/TownyAdvanced/Towny "Percentage of issues still open")
 
-If you still need help, join us on the [Discord server]( https://discord.gg/gnpVs5m ), where you can find cutting edge updates and discussion on the development of the plugin.
+If you still need help, join us on the [Discord server]( https://discord.gg/gnpVs5m ), where you'll find Channels for support, add-on plugins, [SponsorPlugins](https://github.com/LlmDl/SponsorPlugins#readme), plugin-development and just regular old discussion of the plugin.
 
 If you want to support the developer consider [becoming a Sponsor](https://github.com/sponsors/LlmDl).
 

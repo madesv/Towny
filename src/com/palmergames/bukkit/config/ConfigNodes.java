@@ -281,6 +281,13 @@ public enum ConfigNodes {
 			"# at the cost of more work setting up. Also, extremely small values will render the caching done useless.",
 			"# Each cell is (town_block_size * town_block_size * height-of-the-world) in size, with height-of-the-world",
 			"# being from the bottom to the top of the build-able world."),
+	TOWN_MIN_ADJACENT_BLOCKS(
+			"town.min_adjacent_blocks",
+			"-1",
+			"",
+			"# The minimum adjacent town blocks required to expand.",
+			"# This can prevent long lines and snake-like patterns.",
+			"# Set to -1 to disable. Set to 3 to force wider expansions of towns."),
 	
 	NATION("nation", "", "", "",
 			"############################################################",
@@ -654,6 +661,12 @@ public enum ConfigNodes {
 			"false",
 			"",
 			"# When set to true both nation and ally spawn travel will also require the target town to have their status set to public."),
+	GTOWN_SETTINGS_IS_TRUSTED_RESIDENTS_COUNT_AS_RESIDENTS(
+			"global_town_settings.do_trusted_residents_count_as_residents",
+			"false",
+			"",
+			"# When set to true, a player that is trusted by a town is allowed to spawn to the town as if they were a resident.",
+			"# Allows allows the residents of entire an town when that town is trusted by the town."),
 	GTOWN_SETTINGS_SPAWN_TIMER(
 			"global_town_settings.teleport_warmup_time",
 			"0",
@@ -2039,6 +2052,11 @@ public enum ConfigNodes {
 			"false",
 			"",
 			"# When true only residents who have no town will be deleted."),
+	RES_SETTINGS_DELETE_OLD_RESIDENTS_REMOVE_TOWN_ONLY(
+			"resident_settings.delete_old_residents.only_remove_town",
+			"false",
+			"",
+			"# When true players will be removed from their town and become a nomad instead of being fully deleted."),
 	RES_SETTING_DEFAULT_TOWN_NAME(
 			"resident_settings.default_town_name",
 			"",
@@ -2137,14 +2155,28 @@ public enum ConfigNodes {
 			"100.0",
 			"",
 			"# The daily upkeep to remain neutral, paid by the Nation bank. If unable to pay, neutral/peaceful status is lost.",
+			"# This cost is multiplied by the nation_level peacefulCostMultiplier.",
 			"# Neutrality will exclude you from a war event, as well as deterring enemies."),
+	ECO_PRICE_NATION_NEUTRALITY_CHARGES_PER_TOWN(
+			"economy.price_nation_neutrality_charges_per_town",
+			"false",
+			"",
+			"# When it is true, the peaceful cost is multiplied by the nation's number of towns.",
+			"# Note that the base peacful cost is calculated by the price_nation_neutrality X nation_level peacefulCostMultiplier."),
+
 	ECO_PRICE_TOWN_NEUTRALITY(
 			"economy.price_town_neutrality",
 			"25.0",
 			"",
-			"# The daily upkeep to remain neutral, paid by the Town bank. If unable to pay, neutral/peaceful status is lost."),
+			"# The daily upkeep to remain neutral, paid by the Town bank. If unable to pay, neutral/peaceful status is lost.",
+			"# This cost is multiplied by the town_level peacefulCostMultiplier."),
+	ECO_PRICE_TOWN_NEUTRALITY_CHARGES_PER_PLOT(
+			"economy.price_town_neutrality_charges_per_plot",
+			"false",
+			"",
+			"# When it is true, the peaceful cost is multiplied by the town's number of claimed townblocks.",
+			"# Note that the base peacful cost is calculated by the price_town_neutrality X town_level peacefulCostMultiplier."),
 
-	
 	ECO_NEW_EXPAND("economy.new_expand", "", ""),
 	ECO_PRICE_NEW_NATION(
 			"economy.new_expand.price_new_nation",
@@ -2235,17 +2267,17 @@ public enum ConfigNodes {
 	ECO_PRICE_DEATH("economy.death.price_death",
 			"1.0",
 			"",
-			"# The price that a player pays when they die. If this is a PVP death, the amount is paid to the killed.",
+			"# The price that a player pays when they die. If this is a PVP death, the amount is paid to the killer.",
 			"# Either a flat rate or a percentage according to the price_death_type setting."),
 	ECO_PRICE_DEATH_TOWN("economy.death.price_death_town",
 			"0.0",
 			"",
-			"# The price that a player's town pays when they die. If this is a PVP death, the amount is paid to the killed.",
+			"# The price that a player's town pays when they die. If this is a PVP death, the amount is paid to the killer.",
 			"# Either a flat rate or a percentage according to the price_death_type setting."),
 	ECO_PRICE_DEATH_NATION("economy.death.price_death_nation",
 			"0.0",
 			"",
-			"# The price that a player's nation pays when they die. If this is a PVP death, the amount is paid to the killed.",
+			"# The price that a player's nation pays when they die. If this is a PVP death, the amount is paid to the killer.",
 			"# Either a flat rate or a percentage according to the price_death_type setting."),
 
 	ECO_BANK_CAP("economy.banks", "", ""),
@@ -2596,14 +2628,12 @@ public enum ConfigNodes {
 			"jail.is_jailing_attacking_enemies",
 			"false",
 			"",
-			"# If true attacking players who die on enemy-town land will be placed into the defending town's jail if it exists.",
-			"# Requires town_respawn to be true in order to work."),
+			"# If true attacking players who die on enemy-town land will be placed into the defending town's jail if it exists."),
 	JAIL_IS_JAILING_ATTACKING_OUTLAWS(
 			"jail.is_jailing_attacking_outlaws",
 			"false",
 			"",
-			"# If true attacking players who are considered an outlaw, that are killed inside town land will be placed into the defending town's jail if it exists.",
-			"# Requires town_respawn to be true in order to work."),
+			"# If true attacking players who are considered an outlaw, that are killed inside town land will be placed into the defending town's jail if it exists."),
 	JAIL_OUTLAW_JAIL_HOURS(
 			"jail.outlaw_jail_hours",
 			"5",

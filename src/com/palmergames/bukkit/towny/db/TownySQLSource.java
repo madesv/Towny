@@ -32,6 +32,7 @@ import com.palmergames.util.FileMgmt;
 import com.palmergames.util.StringMgmt;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
@@ -62,6 +63,7 @@ import java.util.stream.Collectors;
 public final class TownySQLSource extends TownyDatabaseHandler {
 
 	private final Queue<SQL_Task> queryQueue = new ConcurrentLinkedQueue<>();
+	private boolean isPolling = false;
 	private BukkitTask task = null;
 
 	private final String dsn;
@@ -160,17 +162,26 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 		 * Start our Async queue for pushing data to the database.
 		 */
 		task = BukkitTools.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+			if (this.isPolling)
+				return;
 
-			while (!TownySQLSource.this.queryQueue.isEmpty()) {
+			this.isPolling = true;
+			try {
+				while (!TownySQLSource.this.queryQueue.isEmpty()) {
 
-				SQL_Task query = TownySQLSource.this.queryQueue.poll();
+					final SQL_Task query = TownySQLSource.this.queryQueue.poll();
+					if (query == null)
+						break;
 
-				if (query.update) {
-					TownySQLSource.this.QueueUpdateDB(query.tb_name, query.args, query.keys);
-				} else {
-					TownySQLSource.this.QueueDeleteDB(query.tb_name, query.args);
+					if (query.update) {
+						TownySQLSource.this.QueueUpdateDB(query.tb_name, query.args, query.keys);
+					} else {
+						TownySQLSource.this.QueueDeleteDB(query.tb_name, query.args);
+					}
+
 				}
-
+			} finally {
+				this.isPolling = false;
 			}
 
 		}, 5L, 5L);
@@ -593,15 +604,33 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 
 		TownyMessaging.sendDebugMsg("Loading World List");
 
+		// Check for any new worlds registered with bukkit.
+		for (World world : Bukkit.getServer().getWorlds())
+			universe.newWorld(world);
+
 		if (!getContext())
 			return false;
 		try {
 			try (Statement s = cntx.createStatement()) {
 				ResultSet rs = s.executeQuery("SELECT name FROM " + tb_prefix + "WORLDS");
 				while (rs.next()) {
+					final String name = rs.getString("name");
+					
+					// World is loaded in bukkit and got registered by the newWorld above.
+					if (universe.getWorld(name) != null)
+						continue;
+					
+					UUID uuid = null;
 					try {
-						newWorld(rs.getString("name"));
-					} catch (AlreadyRegisteredException ignored) {
+						uuid = UUID.fromString(rs.getString("uuid"));
+					} catch (IllegalArgumentException | NullPointerException | SQLException ignored) {}
+					
+					if (uuid != null) {
+						universe.registerTownyWorld(new TownyWorld(rs.getString("name"), uuid));
+					} else {
+						try {
+							newWorld(rs.getString("name"));
+						} catch (AlreadyRegisteredException ignored) {}
 					}
 				}
 			}
@@ -612,14 +641,6 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			e.printStackTrace();
 		}
 
-		// Check for any new worlds registered with bukkit.
-		if (plugin != null) {
-			for (World world : plugin.getServer().getWorlds())
-				try {
-					newWorld(world.getName());
-				} catch (AlreadyRegisteredException ignored) {
-				}
-		}
 		return true;
 	}
 	
@@ -1441,6 +1462,15 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 				throw new Exception("World " + worldName + " not registered!");
 
 			TownyMessaging.sendDebugMsg("Loading world " + world.getName());
+			
+			line = rs.getString("uuid");
+			if (line != null && !line.isEmpty()) {
+				try {
+					world.setUUID(UUID.fromString(line));
+				} catch (IllegalArgumentException ignored) {
+					// Invalid uuid
+				}
+			}
 
 			result = rs.getBoolean("claimable");
 			try {
@@ -2159,8 +2189,7 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			twn_hm.put("name", town.getName());
 			twn_hm.put("outlaws", StringMgmt.join(town.getOutlaws(), "#"));
 			twn_hm.put("mayor", town.hasMayor() ? town.getMayor().getName() : "");
-			twn_hm.put("nation", town.hasNation() ? town.getNation().getName() : "");
-			twn_hm.put("assistants", StringMgmt.join(town.getRank("assistant"), "#"));
+			twn_hm.put("nation", town.hasNation() ? town.getNationOrNull().getName() : "");
 			twn_hm.put("townBoard", town.getBoard());
 			twn_hm.put("tag", town.getTag());
 			twn_hm.put("founder", town.getFounder());
@@ -2324,6 +2353,8 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 			HashMap<String, Object> nat_hm = new HashMap<>();
 
 			nat_hm.put("name", world.getName());
+			
+			nat_hm.put("uuid", world.getUUID());
 
 			// PvP
 			nat_hm.put("pvp", world.isPVP());
@@ -2596,16 +2627,6 @@ public final class TownySQLSource extends TownyDatabaseHandler {
 				return Optional.empty();
 			}
 		});
-	}
-
-	/*
-	 * Save keys (Unused by SQLSource)
-	 */
-
-	@Override
-	public boolean saveWorldList() {
-
-		return true;
 	}
 
 	public HikariDataSource getHikariDataSource() {

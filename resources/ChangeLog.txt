@@ -8311,3 +8311,129 @@ v0.92.0.11:
     - Lets other plugins move unjailed residents to a location of their choice, or cancel the teleport altogether.
 0.98.6.2:
   - API: Add new TranslationLoader constructor which only requires a Plugin instance.
+  - Add tab complete for /ta nation recheck, courtesy of Warriorrrr with PR #6449.
+  - Add confirmation to /n set capital, courtesy of Warriorrrr with PR #6450.
+  - Replace more getTown(name) calls with getTownOrThrow(name).
+  - New Config Option: global_town_settings.do_trusted_residents_count_as_residents
+    - Default: false
+    - When set to true, a player that is trusted by a town is allowed to spawn to the town as if they were a resident.
+    - Allows allows the residents of entire an town when that town is trusted by the town.
+0.98.6.3:
+  - Fix money.csv not logging server-account deposit/withdraws.
+  - Add support for EliteMobs mob removal.
+  - Add (for now unused) resourceProductionModifier stat to the config Town_Level.
+    - Your configs will automatically have this added with the default 1.0 setting. 
+0.98.6.4:
+  - Fix plot hud and plot perm commands showing town settings for mobs/fire that were not relevant.
+  - Fix NPE when clicking back button in a non-selection gui, courtesy of Warriorrrr with PR #6464.
+  - Add loading of worlds via their UUID loading, courtesy of Warriorrrr with PR #6377.
+  - New Locales:
+    - Pirate English, Upsidedown English, LOLCAT. Currently goign through initial translation on crowdin.
+0.98.6.5:
+  - Put limits on how many unclaimed townblocks can have their material/entity deletions run at once.
+  - Replace some hardcoded town and nation strings with translatables, courtesy of Warriorrrr with PR #6473.
+  - Fix exception when tab completing /t jail with no town, courtesy of Warriorrrr with PR #6476.
+  - Clean up some old PermissionNodes that don't exist.
+  - Add peacefulCostMultiplier to the config Town_Level and Nation_Level.
+    - Your configs will automatically have this added with the default 1.0 setting.
+    - You can change it from 1.0 to alter what towns and nations pay to stay neutral/peaceful each TownyDay.
+    - With the default of 1.0, no town or nation will be paying any more than they already were.
+    - Closes #5411. 
+  - Prevent liquid spilling in actively regenerating plots which were unclaimed.
+  - Fix /ta forcemerge having swapped town names in message, courtesy of Warriorrrr with PR #6484.
+  - New Command: Add buy subcommand to /ta town NAME.
+    - Closes #6100.
+0.98.6.6:
+  - Replace world with weakref in WorldCoord, courtesy of Warriorrrr with PR #6451.
+  - New Config Option: economy.price_town_neutrality_charges_per_plot
+    - Default: false
+    - When it is true, the peaceful cost is multiplied by the town's number of claimed townblocks.
+    - Note that the base peacful cost is calculated by the price_town_neutrality X town_level peacefulCostMultiplier.
+    - Closes #6486.
+  - New Config Option: economy.price_nation_neutrality_charges_per_town
+    - Default: false
+    - When it is true, the peaceful cost is multiplied by the nation's number of towns.
+    - Note that the base peacful cost is calculated by the price_nation_neutrality X nation_level peacefulCostMultiplier.
+  - Correct the feedback message shown when /ta town TOWNNAME settownlevel unset is used.
+  - Fix worldcoord from location parsing, courtesy of Warriorrrr with PR #6488.
+  - Fix /t claim doing economy calls on the main thread, courtesy of Warriorrrr with PR #6487.
+0.98.6.7:
+  - Add peaceful section to townyperms.yml.
+    - Permission nodes put into this section will be given to any player that is part of a town or nation that is peaceful.
+    - Closes #6015.
+  - Add debtCapModifier to the config Town_Level and Nation_Level.
+    - Your configs will automatically have this added with the default 1.0 setting.
+    - You can change it from 1.0 to alter towns' and nations' maximum bank account levels are, based on their population.
+    - With the default of 1.0, no town or nation will have any change to their current max.
+    - Closes #5037.
+  - Fix nations that collect towntax being able to get above their nation bank cap.
+  - Fix towns and nations from collecting tax amounts that equal 0.
+  - Option to prevent people from claiming in a straight line, courtesy of JKJameson with PR #6482. (First-Time Contributor!)
+    - Closes #6080.
+  - New Config Option: town.min_adjacent_blocks
+    - Default: -1
+    - The minimum adjacent town blocks required to expand.
+    - This can prevent long lines and snake-like patterns.
+    - Set to -1 to disable. Set to 3 to force wider expansions of towns.
+  - API: TownBlockPermissionChangeEvent, courtesy of Pesto with PR #6453.
+    - Adds a cancellable event that is fired when a TownBlock is about to have its permission line changed. 
+  - Fix switch and item use being triggered on left-click, courtesy of Pesto with PR #6495.
+    - Closes #6494.
+  - Bump bstats-bukkit from 3.0.0 to 3.0.1.
+  - Bump maven-javadoc-plugin from 3.4.1 to 3.5.0.
+0.98.6.8:
+  - Reduce number of potential NotRegisterExceptions being thrown.
+  - Fix claiming free plots causing useless bank history, courtesy of Warriorrrr with PR #6499.
+  - Remove /plot claim repossesion logic in favour of /plot evict, courtesy of Warriorrrr with PR #6500.
+  - Only remove non embassies from the left town on resident leave, courtesy of Warriorrrr with PR #6501.
+  - Fix /ta unclaim causing an NPE, courtesy of Warriorrrr with PR #6504.
+  - Minor changes to reduce NRE usage.
+  - Replace messaging used by BaseCommand's getOrThrow methods to be more relevant to players.
+  - Replace getResidentOrThrow(UUID) with getResidentOrThrow(Player) for better feedback messages.
+0.98.6.9:
+  - Add remove town only option to resident purge, courtesy of Warriorrrr with PR #6508.
+    - Closes #6506.
+  - New Config Option: resident_settings.delete_old_residents.only_remove_town
+    - Default: false
+    - When true players will be removed from their town and become a nomad instead of being fully deleted.
+  - Update plugin.yml to use the proper name for MyWorlds, courtesy of bergerkiller with PR #6511. (First-Time Contributor!)
+  - Fix king prefix not showing.
+  - Fix min_adjacent_blocks setting breaking outposts, courtesy of JKJameson & LlmDl with PR #6510.
+    - Closes #6505.
+  - BankAccount update.
+    - Old constructor deprecated, setting balanceCap deprecated.
+    - Potentially fixes the ability for a town to go bankrupt when this feature is disabled.
+  - API: TownEntersBankruptcyEvent.
+    - Thrown when a town enters bankruptcy.
+0.98.6.10:
+  - Update paper repo url, courtesy of Warriorrrr with PR #6520.
+  - API: Add PlayerChangePlotTypeEvent.
+    - Thrown after a player successfully changes a TownBlock's plot type.
+  - Bump log4j-core from 2.19.0 to 2.20.0.
+  - Remove town_spawn: true requirement for jailing altering jailed player's spawn points.
+  - Alter the TownBlockTypeHandler to be able to receive TownBlockTypes from other plugins on server startup.
+0.98.6.11:
+  - Fix sql source query NPE, courtesy of Warriorrrr with PR #6527.
+  - Fix /ta set mayor causing an npe if the old mayor is null, courtesy of Warriorrrr with PR #6528.
+0.98.6.12:
+  - Fix pressure plates not respecting switch permissions, courtesy of Pesto with PR #6532.
+    - Closes #6530.
+0.98.6.13:
+  - Bump annotations from 24.0.0 to 24.0.1.
+  - Bump maven-compiler-plugin from 3.10.1 to 3.11.0.
+  - Make town and nation level related errors easier to debug, courtesy of Warriorrrr with PR #6524.
+  - Fix potential NPE in TownyBlockListener.
+  - Change format used for backup file names, courtesy of Warriorrrr with PR #6538.
+  - Relativize paths in tar.gz backups, courtesy of Warriorrrr with PR #6537.
+0.98.6.14:
+  - Make sure we aren't paying negative amounts to a Nation bank account during tax time.
+    - Closes #6540.
+  - Add an option to disable the mysql backup warning, courtesy of Warriorrrr with PR #6542.
+  - New Database Config Option: database.sql.disable_backup_warning
+    - Default: false
+    - Disables the warning when a backup is made about not all Towny data being backed up when mysql is in use.
+    - Set this to true when you fully understand what not having flatfile backups means, if your mysql database were to become unusable and you have not configured your own backup solution.
+  - Fix potential NPE in MapHud.
+  - Add /res toggle townborder.
+    - A command that turns on townborder mode.
+    - This new mode highlights the borders of the town you're stood in, using the affiliation colours.

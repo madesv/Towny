@@ -67,10 +67,10 @@ nation_help_3: 'Състоянието на избраната нация'
 nation_help_4: 'Списък с всички нации'
 nation_help_5: 'Извадете градът от вашата нация'
 nation_help_6: 'Създайте нова нация'
-nation_help_7: 'List the nation leader commands'
+nation_help_7: 'Показва командите за националния лидер'
 nation_help_8: 'Създайте нова нация'
 nation_help_9: 'Списък с всички жители на нация'
-king_help_1: 'Nation Leader Help'
+king_help_1: 'Помощ за национален лидер'
 king_help_2: 'Съюзете се.'
 king_help_3: 'Изеберете си враговете.'
 res_1: 'Вашето състояние'
@@ -78,29 +78,29 @@ res_2: '[жител]'
 res_3: 'Състоянието на избран играч'
 res_4: 'Списък с всички активни играчи'
 res_5: 'за помощ'
-res_6: 'Online match'
-res_7: 'Exact name'
-mode_1: 'Show the map between each townblock'
-mode_2: 'Attempt to claim as you walk'
-mode_3: 'Attempt to unclaim as you walk'
-mode_4: 'Default chat to town channel'
-mode_5: 'Default chat to nation channel'
-mode_6: 'Can place %s in enemy borders to make warzones.'
-plot_perms: 'Use %s instead of %s for plot permissions.'
-plot_perms_1: 'Resident plots don''t make use of outsider permissions.'
-res_list: 'Residents'
-res_sing: 'Resident'
-mayor_sing: 'Mayor'
-admin_sing: 'Admin'
-town_sing: 'Town'
-nation_sing: 'Nation'
-nation_plu: 'Nations'
-king_sing: 'Leader'
-town_plu: 'Towns'
-world_plu: 'Worlds'
-world_sing: 'World'
-world_help_1: 'Current world''s status'
-world_help_2: '[world]'
+res_6: 'Онлайн матч'
+res_7: 'Точно име'
+mode_1: 'Покажи картата между всеки градски блок'
+mode_2: 'Опит да изисквате докато ходите'
+mode_3: 'Опит за премахване на изискванията докато ходите'
+mode_4: 'Чат по подразбиране към чатът на града'
+mode_5: 'Чат по подразбиране на националния чат'
+mode_6: 'Може да постави %s във вражески гранизи за да създаде военни зони.'
+plot_perms: 'Използва %s вместо %s за права на територия.'
+plot_perms_1: 'Територия не се възползва от правата на външните.'
+res_list: 'Жители'
+res_sing: 'Жител'
+mayor_sing: 'Кмет'
+admin_sing: 'Администратор'
+town_sing: 'Град'
+nation_sing: 'Нация'
+nation_plu: 'Нации'
+king_sing: 'Лидер'
+town_plu: 'Градове'
+world_plu: 'Светове'
+world_sing: 'Свят'
+world_help_1: 'Статус на вмоменташния свят'
+world_help_2: '[свят]'
 world_help_3: 'Target worlds''s status'
 world_help_4: 'List all worlds'
 world_help_5: 'Regenerate this chunk'
@@ -1632,3 +1632,26 @@ msg_founder_set: 'The town of %s has had the founder set to %s.'
 msg_town_allowedtowar_setting_set_to: 'The town %s has had their allowed-to-war setting set to %s.'
 #Message shown to confirm that a player wants to unclaim all of their land, besides the homeblock, seen with /t unclaim all.
 confirmation_did_you_want_to_unclaim_all: 'Are you sure you want to unclaim all of your land? (Your homeblock will not be unclaimed.)'
+#Message shown after a player unclaims all their land.
+msg_you_have_unclaimed_everything_but_your_homeblock: "You have unclaimed everything but your homeblock. To unclaim your homeblock you must set a new homeblock using '/t set homeblock' first."
+msg_warn_are_you_sure_you_want_to_transfer_nation_ownership: "<red>Are you sure you want to transfer nation ownership to %s? This action is irreversible!"
+msg_warn_town_already_capital: "<red>The town of %s is already the nation capital."
+msg_min_adjacent_blocks: 'You are required to have at least %s adjacent town blocks. There is only %s.'
+#Shown when a player with /plot evict permissions uses /plot claim on an owned but not for sale plot, please preserve comma space at the start when translating.
+msg_plot_claim_consider_evict_instead: ', perhaps you are looking for /plot evict instead?'
+#Shown to a player when Towny does not know of them.
+msg_you_are_unknown: "You are not known to Towny."
+#Generic Resident/Town/Nation/Thing is not known to Towny.
+msg_townyobject_unknown: "%s is not known to Towny."
+#Shown when a resident is unknown to Towny.
+msg_err_resident_unknown: "%s is not a resident that is recognized."
+#Shown when a town is unknown to Towny.
+msg_err_town_unknown: "%s is not a town that is recognized."
+#Shown when a nation is unknown to Towny.
+msg_err_nation_unknown: "%s is not a nation that is recognized."
+#Shown when a resident doesn't belong to a town.
+msg_err_townyobject_x_has_no_town: "%s does not belong to any town."
+#Shown when a town doesn't belong to a nation.
+msg_err_townyobject_x_has_no_nation: "%s does not belong to any nation."
+#Shown to admins when they use /plot claimedat on a plot which has no registration date.
+msg_err_townblock_has_no_claimedat_data: "This townblock has no data on when it was claimed."

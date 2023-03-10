@@ -41,6 +41,8 @@ import com.palmergames.bukkit.towny.object.jail.Jail;
 import com.palmergames.bukkit.towny.object.jail.UnJailReason;
 import com.palmergames.bukkit.towny.regen.PlotBlockData;
 import com.palmergames.bukkit.towny.regen.TownyRegenAPI;
+import com.palmergames.bukkit.towny.regen.WorldCoordEntityRemover;
+import com.palmergames.bukkit.towny.regen.WorldCoordMaterialRemover;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask;
 import com.palmergames.bukkit.towny.tasks.DeleteFileTask;
 import com.palmergames.bukkit.towny.tasks.CooldownTimerTask.CooldownType;
@@ -70,6 +72,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
@@ -81,6 +84,7 @@ import java.util.zip.ZipFile;
  * @author ElgarL
  */
 public abstract class TownyDatabaseHandler extends TownyDataSource {
+	public static final SimpleDateFormat BACKUP_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	final String rootFolderPath;
 	final String dataFolderPath;
 	final String settingsFolderPath;
@@ -138,15 +142,16 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public boolean backup() throws IOException {
 
-		if (!TownySettings.getSaveDatabase().equalsIgnoreCase("flatfile")) {
+		if (!TownySettings.getSaveDatabase().equalsIgnoreCase("flatfile") && !TownySettings.disableMySQLBackupWarning()) {
 			plugin.getLogger().info("***** Warning *****");
-			plugin.getLogger().info("***** Only Snapshots & Regen files in towny\\data\\ will be backed up!");
+			plugin.getLogger().info("***** Only Snapshots & Regen files in plugins/Towny/data/ will be backed up!");
 			plugin.getLogger().info("***** This does not include your residents/towns/nations.");
 			plugin.getLogger().info("***** Make sure you have scheduled a backup in MySQL too!!!");
+			plugin.getLogger().info("***** If you already have backups or accept the risk, this message can be disabled in the database config.");
 		}
+		
 		String backupType = TownySettings.getFlatFileBackupType();
-		long t = System.currentTimeMillis();
-		String newBackupFolder = backupFolderPath + File.separator + new SimpleDateFormat("yyyy-MM-dd HH-mm").format(t) + " - " + t;
+		String newBackupFolder = backupFolderPath + File.separator + BACKUP_DATE_FORMAT.format(System.currentTimeMillis());
 		FileMgmt.checkOrCreateFolders(rootFolderPath, rootFolderPath + File.separator + "backup");
 		switch (backupType.toLowerCase()) {
 		case "folder": {
@@ -233,10 +238,10 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 	@Override
 	public void newWorld(String name) throws AlreadyRegisteredException {
 		
-		if (universe.getWorldMap().containsKey(name.toLowerCase()))
+		if (universe.getWorldMap().containsKey(name.toLowerCase(Locale.ROOT)))
 			throw new AlreadyRegisteredException("The world " + name + " is already in use.");
 
-		universe.getWorldMap().put(name.toLowerCase(), new TownyWorld(name));
+		universe.getWorldMap().put(name.toLowerCase(Locale.ROOT), new TownyWorld(name));
 	}
 
 	/*
@@ -496,10 +501,10 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		deleteTownBlock(townBlock);
 
 		if (townBlock.getWorld().isDeletingEntitiesOnUnclaim())
-			TownyRegenAPI.addDeleteTownBlockEntityQueue(townBlock.getWorldCoord());
+			WorldCoordEntityRemover.addToQueue(townBlock.getWorldCoord());
 
 		if (townBlock.getWorld().isUsingPlotManagementDelete())
-			TownyRegenAPI.addDeleteTownBlockIdQueue(townBlock.getWorldCoord());
+			WorldCoordMaterialRemover.addToQueue(townBlock.getWorldCoord());
 
 		// Move the plot to be restored
 		if (townBlock.getWorld().isUsingPlotManagementRevert())
@@ -621,16 +626,12 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 		List<Nation> toSaveNation = new ArrayList<>();
 		for (Nation toCheck : new ArrayList<>(universe.getNations()))
 			if (toCheck.hasAlly(nation) || toCheck.hasEnemy(nation)) {
-				try {
-					if (toCheck.hasAlly(nation))
-						toCheck.removeAlly(nation);
-					else
-						toCheck.removeEnemy(nation);
+				if (toCheck.hasAlly(nation))
+					toCheck.removeAlly(nation);
+				else
+					toCheck.removeEnemy(nation);
 
-					toSaveNation.add(toCheck);
-				} catch (NotRegisteredException e) {
-					e.printStackTrace();
-				}
+				toSaveNation.add(toCheck);
 			}
 
 		for (Nation toCheck : toSaveNation)
@@ -767,7 +768,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 
 			// Store the nation in case we have to update the capitol
 			if (town.hasNation()) {
-				nation = town.getNation();
+				nation = town.getNationOrNull();
 				isCapital = town.isCapital();
 			}
 
@@ -898,16 +899,12 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			List<Nation> toSaveNation = new ArrayList<>(universe.getNations());
 			for (Nation toCheck : toSaveNation)
 				if (toCheck.hasAlly(oldNation) || toCheck.hasEnemy(oldNation)) {
-					try {
-						if (toCheck.hasAlly(oldNation)) {
-							toCheck.removeAlly(oldNation);
-							toCheck.addAlly(nation);
-						} else {
-							toCheck.removeEnemy(oldNation);
-							toCheck.addEnemy(nation);
-						}
-					} catch (NotRegisteredException e) {
-						e.printStackTrace();
+					if (toCheck.hasAlly(oldNation)) {
+						toCheck.removeAlly(oldNation);
+						toCheck.addAlly(nation);
+					} else {
+						toCheck.removeEnemy(oldNation);
+						toCheck.addEnemy(nation);
 					}
 				} else
 					toSave.remove(toCheck);
@@ -1331,12 +1328,7 @@ public abstract class TownyDatabaseHandler extends TownyDataSource {
 			mergeFrom.getAccount().payTo(mergeFrom.getAccount().getHoldingBalance(), mergeInto, Translation.of("msg_town_merge_transaction_reason"));
 
 		lock.lock();
-		boolean isSameNation = false;
-		if (mergeInto.hasNation() && mergeFrom.hasNation()) {
-			try {
-				isSameNation = mergeInto.getNation().hasTown(mergeFrom);
-			} catch (NotRegisteredException ignored) {}
-		}
+		boolean isSameNation = mergeInto.hasNation() && mergeInto.getNationOrNull().hasTown(mergeFrom);
 		String mayorName = mergeFrom.getMayor().getName();
 		List<Jail> jails = universe.getJailUUIDMap().values().stream()
 				.filter(jail -> jail.getTown().equals(mergeFrom))

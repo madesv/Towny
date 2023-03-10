@@ -126,7 +126,7 @@ msg_payed_plot_cost: '&bPayed %s for %s plots in %s'
 msg_payed_resident_tax: '&bPayed resident tax of '
 msg_bankrupt_town: ' couldn''t afford to remain a town.'
 msg_bankrupt_nation: ' couldn''t afford to remain a nation.'
-msg_nation_not_peaceful: '&bNation couldn''t afford it''s peaceful state.'
+msg_nation_not_peaceful: '&bNation couldn''t afford its peaceful state.'
 msg_nation_cant_peaceful: '&bNation couldn''t afford to become a peaceful nation.'
 msg_peaceful_disabled: '&bNation peace is disabled globally.'
 msg_you_paid: '&bYou paid %s to set peaceful status.'
@@ -169,9 +169,9 @@ msg_town_online: 'Online in Town'
 msg_nation_online: 'Online in Nation'
 msg_allied_nations: '&b%s allied with the nations %s.'
 msg_enemy_nations: '&b%s developed a hatred for the nations %s.'
-msg_enemy_to_neutral: '&b%s has changed it''s status to peaceful towards %s.'
+msg_enemy_to_neutral: '&b%s has changed its status to peaceful towards %s.'
 msg_added_ally: '&b%s allied with your nation.'
-msg_removed_ally: '&b%s canceled the alliance with your nation.'
+msg_removed_ally: '&b%s cancelled the alliance with your nation.'
 msg_added_enemy: '&b%s has developed a hatred towards your nation.'
 msg_removed_enemy: '&b%s has become peaceful towards your nation.'
 msg_unable_ally_enemy: '&cUnable to ally %s as they have us as enemies.'
@@ -1632,3 +1632,26 @@ msg_founder_set: 'The town of %s has had the founder set to %s.'
 msg_town_allowedtowar_setting_set_to: 'The town %s has had their allowed-to-war setting set to %s.'
 #Message shown to confirm that a player wants to unclaim all of their land, besides the homeblock, seen with /t unclaim all.
 confirmation_did_you_want_to_unclaim_all: 'Are you sure you want to unclaim all of your land? (Your homeblock will not be unclaimed.)'
+#Message shown after a player unclaims all their land.
+msg_you_have_unclaimed_everything_but_your_homeblock: "You have unclaimed everything but your homeblock. To unclaim your homeblock you must set a new homeblock using '/t set homeblock' first."
+msg_warn_are_you_sure_you_want_to_transfer_nation_ownership: "<red>Are you sure you want to transfer nation ownership to %s? This action is irreversible!"
+msg_warn_town_already_capital: "<red>The town of %s is already the nation capital."
+msg_min_adjacent_blocks: 'You are required to have at least %s adjacent town blocks. There is only %s.'
+#Shown when a player with /plot evict permissions uses /plot claim on an owned but not for sale plot, please preserve comma space at the start when translating.
+msg_plot_claim_consider_evict_instead: ', perhaps you are looking for /plot evict instead?'
+#Shown to a player when Towny does not know of them.
+msg_you_are_unknown: "You are not known to Towny."
+#Generic Resident/Town/Nation/Thing is not known to Towny.
+msg_townyobject_unknown: "%s is not known to Towny."
+#Shown when a resident is unknown to Towny.
+msg_err_resident_unknown: "%s is not a resident that is recognized."
+#Shown when a town is unknown to Towny.
+msg_err_town_unknown: "%s is not a town that is recognized."
+#Shown when a nation is unknown to Towny.
+msg_err_nation_unknown: "%s is not a nation that is recognized."
+#Shown when a resident doesn't belong to a town.
+msg_err_townyobject_x_has_no_town: "%s does not belong to any town."
+#Shown when a town doesn't belong to a nation.
+msg_err_townyobject_x_has_no_nation: "%s does not belong to any nation."
+#Shown to admins when they use /plot claimedat on a plot which has no registration date.
+msg_err_townblock_has_no_claimedat_data: "This townblock has no data on when it was claimed."

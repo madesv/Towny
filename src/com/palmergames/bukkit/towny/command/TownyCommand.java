@@ -173,12 +173,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 						throw new TownyException(Translatable.of("msg_err_no_economy"));
 
 					if (split.length > 1) {
-						town = TownyUniverse.getInstance().getTown(split[1]);
-
-						if (town == null) {
-							TownyMessaging.sendErrorMsg(player, Translatable.of("msg_err_not_registered_1", split[1]));
-							return;
-						}
+						town = getTownOrThrow(split[1]);
 					} else if (player != null) {
 						Resident resident = TownyAPI.getInstance().getResident(player);
 						
@@ -195,7 +190,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					if (world == null || !world.isUsingTowny())
 						throw new TownyException(Translatable.of("msg_err_usingtowny_disabled"));
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					ResidentUtil.openSelectionGUI(resident, SelectionGUI.SelectionType.SWITCHES);
 					break;
 				}
@@ -204,7 +199,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					if (world == null || !world.isUsingTowny())
 						throw new TownyException(Translatable.of("msg_err_usingtowny_disabled"));
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					ResidentUtil.openSelectionGUI(resident, SelectionGUI.SelectionType.ITEMUSE);
 					break;
 				}
@@ -213,7 +208,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					if (world == null || !world.isUsingTowny())
 						throw new TownyException(Translatable.of("msg_err_usingtowny_disabled"));
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					ResidentUtil.openSelectionGUI(resident, SelectionGUI.SelectionType.ALLOWEDBLOCKS);
 					break;
 				}
@@ -222,7 +217,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					if (world == null || !world.isUsingTowny())
 						throw new TownyException(Translatable.of("msg_err_usingtowny_disabled"));
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					ResidentUtil.openGUIInventory(resident, world.getUnclaimedZoneIgnoreMaterials(), Translatable.of("gui_title_towny_wildsblocks").forLocale(player));
 					break;
 				}
@@ -231,7 +226,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					if (world == null || !world.isUsingTowny())
 						throw new TownyException(Translatable.of("msg_err_usingtowny_disabled"));
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					ResidentUtil.openGUIInventory(resident, world.getPlotManagementMayorDelete(), Translatable.of("gui_title_towny_plotclear").forLocale(player));
 					break;
 				}
@@ -278,7 +273,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 					catchConsole(sender);
 					checkPermOrThrow(sender, PermissionNodes.TOWNY_CHAT_SPY.getNode());
 
-					Resident resident = getResidentOrThrow(player.getUniqueId());
+					Resident resident = getResidentOrThrow(player);
 					resident.toggleMode(split, true);
 					break;
 				}
@@ -455,7 +450,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 
 			output.add(translator.of("towny_prices_taxes_plot", (town.isTaxPercentage()? town.getTaxes() + "%" : getMoney(town.getTaxes())), getMoney(town.getPlotTax())));
 			output.add(translator.of("towny_prices_taxes_shop", getMoney(town.getCommercialPlotTax()), getMoney(town.getEmbassyPlotTax())));
-			output.add(translator.of("towny_prices_town_neutral_tax", getMoney(TownySettings.getTownNeutralityCost())));
+			output.add(translator.of("towny_prices_town_neutral_tax", getMoney(TownySettings.getTownNeutralityCost(town))));
 			
 			output.add(translator.of("towny_prices_plots"));
 			List<TownBlockType> townBlockTypes = new ArrayList<>(TownBlockTypeHandler.getTypes().values());
@@ -474,7 +469,7 @@ public class TownyCommand extends BaseCommand implements CommandExecutor {
 
 			if (nation != null) {
 				output.add(translator.of("towny_prices_nationname", nation.getFormattedName()));
-				output.add(translator.of("towny_prices_nation_tax", (nation.isTaxPercentage() ? nation.getTaxes() + "%" : getMoney(nation.getTaxes())), getMoney(TownySettings.getNationNeutralityCost())));
+				output.add(translator.of("towny_prices_nation_tax", (nation.isTaxPercentage() ? nation.getTaxes() + "%" : getMoney(nation.getTaxes())), getMoney(TownySettings.getNationNeutralityCost(nation))));
 			}
 		}
 		return output;
