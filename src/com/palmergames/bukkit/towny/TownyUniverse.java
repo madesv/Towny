@@ -140,7 +140,7 @@ public class TownyUniverse {
      * @param loadDbType - load setting from the config.
      * @param saveDbType - save setting from the config.
      */
-	void loadAndSaveDatabase(String loadDbType, String saveDbType) {
+	public void loadAndSaveDatabase(String loadDbType, String saveDbType) {
 		closeDataSources();
     	towny.getLogger().info("Database: [Load] " + loadDbType + " [Save] " + saveDbType);
 		initDatabase(loadDbType, saveDbType);
@@ -201,7 +201,7 @@ public class TownyUniverse {
      *
      * @return true when the database will load.
      */
-    private boolean loadDatabase() {
+    public boolean loadDatabase() {
         long startTime = System.currentTimeMillis();
         /*
          * Load the actual database.

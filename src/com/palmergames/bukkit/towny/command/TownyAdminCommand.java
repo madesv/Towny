@@ -2069,12 +2069,11 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 		}
 		
 		try {
-			TownySettings.loadConfig(Paths.get(TownyUniverse.getInstance().getRootFolder()).resolve("settings").resolve("config.yml"), plugin.getVersion());
 			TownySettings.loadTownLevelConfig();   // TownLevel and NationLevels are not loaded in the config,
 			TownySettings.loadNationLevelConfig(); // but later so the config-migrator can do it's work on them if needed.
 			Translation.loadTranslationRegistry();
 			TownBlockTypeHandler.initialize();
-		} catch (IOException e) {
+		} catch (TownyException e) {
 			TownyMessaging.sendErrorMsg(sender, Translatable.of("msg_reload_error"));
 			e.printStackTrace();
 			return;
@@ -2129,8 +2128,8 @@ public class TownyAdminCommand extends BaseCommand implements CommandExecutor {
 
 		try {
 			int days = Integer.parseInt(split[0]);
-			Confirmation.runOnAccept(() -> 
-				new ResidentPurge(plugin, sender, TimeTools.getMillis(days + "d"), townless, town).start()
+			Confirmation.runOnAccept(() ->
+				Bukkit.getScheduler().runTaskAsynchronously(plugin, new ResidentPurge(sender, TimeTools.getMillis(days + "d"), townless, town))
 			).sendTo(sender);
 		} catch (NumberFormatException e) {
 			throw new TownyException(Translatable.of("msg_error_must_be_int"));
